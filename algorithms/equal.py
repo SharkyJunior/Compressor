@@ -1,6 +1,6 @@
 import math
 
-def encode(path: str) -> str:
+def encode(path: str) -> None:
     with open(path, 'r') as file:
         contents = file.readline()
         letters = []
@@ -27,7 +27,7 @@ def encode(path: str) -> str:
         open(f"{path.replace('.txt', '')}_encoded.txt", 'w').write(final_string)
 
 
-def decode(path: str) -> str:
+def decode(path: str) -> None:
     with open(path, 'r') as file:
         contents = file.readline().replace('\n', '')
         dictionary = {}

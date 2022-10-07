@@ -1,6 +1,9 @@
-import sys
-import algorithms.equal as equal
 from argparse import ArgumentParser
+
+import algorithms.equal as equal
+import algorithms.rle as rle
+
+
 
 #region ArgumentParser
 parser = ArgumentParser(description="Encodes/decodes text files with two ways: Equal with dictionary or RLE", add_help=True)
@@ -16,6 +19,8 @@ procGroup.add_argument('-e', action="store_false", help="encode")
 procGroup.add_argument('-d', action='store_false', help="decode")
 #endregion
 
+
+
 def main():
     args = parser.parse_args()
     path = args.file
@@ -24,7 +29,10 @@ def main():
             equal.encode(path)
         elif args.d:
             equal.decode('q_encoded.txt')
-
-
-    
+    elif args.rle:
+        if args.e:
+            rle.encode(path)
+        elif args.d:
+            rle.decode(path)
+            
 main()
