@@ -21,7 +21,7 @@ def encode(path: str) -> str:
           
         #encoding content and dumping it in final string  
         for char in contents:
-            final_string += toEncoded(letters.index(char), len(letters))
+            final_string += encodeWithDictLen(letters.index(char), len(letters))
         
         #creating a file where encoded string will be stored
         open(f"{path.replace('.txt', '')}_encoded.txt", 'w').write(final_string)
@@ -38,7 +38,7 @@ def decode(path: str) -> str:
         #parsing dictionary bytes and making a python dict variable out of them
         counter = 0
         for i in range(8, dictLen * 8 + 1, 8):
-            dictionary[f'{toEncoded(counter, dictLen)}'] = chr(int(contents[i:i+8], 2))
+            dictionary[f'{encodeWithDictLen(counter, dictLen)}'] = chr(int(contents[i:i+8], 2))
             counter += 1
             
         decoded_string = ''
@@ -60,7 +60,7 @@ def toByte(int: int) -> str:
         byte = '0' + byte
     return byte
 
-def toEncoded(index: int, dictLen: int) -> str:
+def encodeWithDictLen(index: int, dictLen: int) -> str:
     output = format(index, 'b')
     while len(output) < math.log2(dictLen):
         output = '0' + output
