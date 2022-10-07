@@ -65,6 +65,3 @@ def encodeWithDictLen(index: int, dictLen: int) -> str:
     while len(output) < math.log2(dictLen):
         output = '0' + output
     return output
-
-def intFromByte(str: str) -> int:
-    return int(str)
