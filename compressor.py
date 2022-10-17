@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-import algorithms.equal as equal
+import algorithms.dict as dict
 import algorithms.rle as rle
 
 # region ArgumentParser
@@ -12,8 +12,8 @@ parser.add_argument('-f', '--file', type=str, help="File to encode/decode",
                     metavar="FILE", required=True)
 
 modeGroup = parser.add_mutually_exclusive_group(required=True)
-modeGroup.add_argument('--equal', action="store_true",
-                       help="mode: equal with dictionary")
+modeGroup.add_argument('--dict', action="store_true",
+                       help="mode: dictionary-based")
 modeGroup.add_argument('--rle', action="store_true", help="mode: RLE")
 
 procGroup = parser.add_mutually_exclusive_group(required=True)
@@ -24,16 +24,12 @@ procGroup.add_argument('-d', action='store_true', help="decode")
 
 def main():
     args = parser.parse_args()
-    print(args.equal)
-    print(args.rle)
-    print(args.e)
-    print(args.d)
     path = args.file
     if args.equal:
         if args.e:
-            equal.encode(path)
+            dict.encode(path)
         elif args.d:
-            equal.decode(path)
+            dict.decode(path)
     elif args.rle:
         if args.e:
             rle.encode(path)

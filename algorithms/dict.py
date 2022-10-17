@@ -39,7 +39,6 @@ def decode(path: str) -> None:
             dictionary[f'{encodeWithDictLen(counter, dictLen)}'] = chr(int(contents[i:i+8], 2))
             counter += 1
         
-        print(dictionary)
         decoded_string = ''
 
         # calculating the number of bits that are needed for one symbol to be stored

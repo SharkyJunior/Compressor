@@ -3,7 +3,6 @@
 def encode(path: str) -> None:
     with open(path, 'r') as file:
         contents = file.readline()
-        print(contents, '\n')
         final_string = ''
 
         noRepeatStr = ''
@@ -13,7 +12,6 @@ def encode(path: str) -> None:
                 if noRepeatStr != '':
                     noRepeatStr = contents[i-len(noRepeatStr)-1] + noRepeatStr
                     noRepeatStr = noRepeatStr[:-1]
-                    print(length, noRepeatStr, i, 'no repeat ended')
                     final_string += toHelpByte(len(noRepeatStr), False)
                     for char in noRepeatStr:
                         final_string += toByte(ord(char))
@@ -21,7 +19,6 @@ def encode(path: str) -> None:
                     length = 1
             elif contents[i-1] != contents[i]:
                 if length > 1 and noRepeatStr == '':
-                    print(length, contents[i-1], i, 'repeat ended')
                     final_string += toHelpByte(length, True)
                     final_string += toByte(ord(contents[i-1]))
                     length = 0
@@ -31,14 +28,12 @@ def encode(path: str) -> None:
             length += 1
         
         if length > 1:
-            print(length, contents[i-1], i, 'repeat ended')
             final_string += toHelpByte(length, True)
             final_string += toByte(ord(contents[i-1]))
             length = 0
         else:
             noRepeatStr = contents[len(contents)-len(noRepeatStr)-1] + noRepeatStr
             length = len(noRepeatStr)
-            print(length, noRepeatStr, 'no repeat ended')
             final_string += toHelpByte(len(noRepeatStr), False)
             for char in noRepeatStr:
                 final_string += toByte(ord(char))
