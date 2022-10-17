@@ -1,4 +1,6 @@
 # Compressor
+![latest version](https://img.shields.io/badge/latest%20version-v1.0.1-brightgreen)
+![supported?](https://img.shields.io/badge/supported%3F-no-red)
 ## About
 A task for TOI which involves writing two algorithms for compressing:
 - Dictionary-based
