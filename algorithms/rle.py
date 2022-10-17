@@ -1,86 +1,39 @@
-
-
 def encode(path: str) -> None:
     with open(path, 'r') as file:
         contents = file.readline()
         final_string = ''
+        i: int = 0
+        while i < len(contents):
+            count: int = 1
+            j: int = i
 
-        noRepeatStr = ''
-        length = 1
-        for i in range(1, len(contents)):
-            if contents[i-1] == contents[i]:
-                if noRepeatStr != '':
-                    noRepeatStr = contents[i-len(noRepeatStr)-1] + noRepeatStr
-                    noRepeatStr = noRepeatStr[:-1]
-                    final_string += toHelpByte(len(noRepeatStr), False)
-                    for char in noRepeatStr:
-                        final_string += toByte(ord(char))
-                    noRepeatStr = ''
-                    length = 1
-            elif contents[i-1] != contents[i]:
-                if length > 1 and noRepeatStr == '':
-                    final_string += toHelpByte(length, True)
-                    final_string += toByte(ord(contents[i-1]))
-                    length = 0
-                if length == 1:
-                    noRepeatStr += contents[i]
-                    length = 0
-            length += 1
-        
-        if length > 1:
-            final_string += toHelpByte(length, True)
-            final_string += toByte(ord(contents[i-1]))
-            length = 0
-        else:
-            noRepeatStr = contents[len(contents)-len(noRepeatStr)-1] + noRepeatStr
-            length = len(noRepeatStr)
-            final_string += toHelpByte(len(noRepeatStr), False)
-            for char in noRepeatStr:
-                final_string += toByte(ord(char))
-            noRepeatStr = ''
-            length = 1
+            while j < len(contents) - 1:
+                if contents[j] == contents[j + 1]:
+                    count += 1
+                    j += 1
+                else:
+                    break
 
-        open(f"{path.replace('.txt', '')}_encoded.txt", 'w').write(final_string) 
+            count_bin = bin(count)[2:]
+            contents_bin = bin(ord(contents[i]))[2:]
+
+            final_string += '0' * (8 - len(count_bin)) + count_bin
+            final_string += '0' * (8 - len(contents_bin)) + contents_bin
+
+            i = j + 1
+
+    open(f"{path.replace('.txt', '')}_encoded.txt", 'w').write(final_string)
 
 
 def decode(path: str) -> None:
     with open(path, 'r') as file:
         contents = file.readline()
-        print(contents)
-        decoded_string = ''
-        
-        counter = 0
-        while counter < len(contents):
-            helpByte = contents[counter:counter+8]
-            print('helpByte', helpByte)
-            if helpByte[0] == '1':
-                print('byte to add', contents[counter+8:counter+8+8], chr(int(contents[counter+8:counter+8+8], 2)), int(helpByte[1:], 2))
-                for i in range(int(helpByte[1:], 2)):
-                    decoded_string += chr(int(contents[counter+8:counter+8+8], 2))
-                counter += 16
-            else:
-                for i in range(counter, counter + 8 * (int(helpByte[1:], 2) + 1), 8):
-                    decoded_string += chr(int(contents[i:i+8], 2))
-                counter += 8 * (int(helpByte[1:], 2) + 1) 
-                    
-        print(decoded_string)
-        open(f"{path.replace('_encoded.txt', '')}_decoded.txt", 'w').write(decoded_string)
-
-
-def toByte(int: int) -> str:
-    byte = format(int, 'b')
-    while len(byte) < 8:
-        byte = '0' + byte
-    return byte
-
-
-def toHelpByte(int: int, repeating: bool) -> str:
-    byte = format(int, 'b')
-    while len(byte) < 7:
-        byte = '0' + byte
-   
-    if repeating:
-        byte = '1' + byte
-    else:
-        byte = '0' + byte
-    return byte
+        decoded: str = ""
+        i: int = 0
+        while i < len(contents) - 1:
+            count: int = int(contents[i:i + 8], 2)
+            contents_bin: str = contents[i + 8:i + 16]
+            decoded += chr(int(contents_bin, 2)) * count
+            i += 16
+        with open(f"{path.replace('_encoded.txt', '')}_decoded.txt", 'w') as file_decode:
+            file_decode.write(decoded)
