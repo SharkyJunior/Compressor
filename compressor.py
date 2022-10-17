@@ -25,7 +25,7 @@ procGroup.add_argument('-d', action='store_true', help="decode")
 def main():
     args = parser.parse_args()
     path = args.file
-    if args.equal:
+    if args.dict:
         if args.e:
             dict.encode(path)
         elif args.d:
